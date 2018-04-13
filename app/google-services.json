@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "822403005430",
+    "firebase_url": "https://maps-459de.firebaseio.com",
+    "project_id": "maps-459de",
+    "storage_bucket": "maps-459de.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:822403005430:android:bcd926dea777bacd",
+        "android_client_info": {
+          "package_name": "com.example.enakashima.mapsexample"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "822403005430-fua9ho1id37kef7jj0m3eo1780r8lfl6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBipf65KejCAS4aQswiE-MrJXc7yn3BOQQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
