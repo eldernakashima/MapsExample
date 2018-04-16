@@ -77,7 +77,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
                 GetRequest getRequest = new GetRequest();
-                getRequest.execute("http://bcadb276.ngrok.io/");
+                getRequest.execute("http://f3389071.ngrok.io/");
             }
         });
 
