@@ -96,7 +96,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        Marker myPos = mMap.addMarker(new MarkerOptions().position(new LatLng(-23.557096, -46.730211)));
+        Marker myPos = mMap.addMarker(new MarkerOptions().position(new LatLng(-23.557096, -46.730211)).title("me"));
 
         // Set a listener for marker click.
         mMap.setOnMarkerClickListener(this);
@@ -108,9 +108,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        if (marker.getTitle().contains("SP")){
-            FirebaseCrash.log("Não vá a este local!");
-            FirebaseCrash.report(new Exception("Pessimo kart"));
+            if (marker.getTitle().contains("SP")){
+                FirebaseCrash.log("Não vá a este local!");
+                FirebaseCrash.report(new Exception("Pessimo kart"));
         }
         return false;
     }
