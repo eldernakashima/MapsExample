@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "822403005430-cppm1goe56i0tinqikd6u0gvpj10uqka.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.enakashima.mapsexample",
+            "certificate_hash": "b19524f87cb35ba6c4826a3ea1583669cf62c1ca"
+          }
+        },
+        {
           "client_id": "822403005430-fua9ho1id37kef7jj0m3eo1780r8lfl6.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "822403005430-fua9ho1id37kef7jj0m3eo1780r8lfl6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

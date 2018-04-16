@@ -1,6 +1,10 @@
 package com.example.enakashima.mapsexample;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -14,7 +18,13 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.crash.FirebaseCrash;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.turbomanage.httpclient.AsyncCallback;
 import com.turbomanage.httpclient.BasicHttpClient;
 import com.turbomanage.httpclient.HttpResponse;
@@ -25,10 +35,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+import java.util.HashMap;
+
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap mMap;
     private Button find;
+    private FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,14 +52,35 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        remoteConfig.setConfigSettings(new FirebaseRemoteConfigSettings.Builder()
+                .setDeveloperModeEnabled(true)
+                .build());
+
+        HashMap<String,Object> defaults = new HashMap<>();
+        defaults.put("color","#00008B");
+        remoteConfig.setDefaults(defaults);
+
+        remoteConfig.fetch(0);
         find = findViewById(R.id.find);
+        final Task<Void> fetch = remoteConfig.fetch(0);
+        fetch.addOnSuccessListener(this, new OnSuccessListener<Void>() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public void onSuccess(Void aVoid) {
+                remoteConfig.activateFetched();
+                find.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(remoteConfig.getString("color"))));
+                System.out.println("Color ---- " + remoteConfig.getString("color"));
+            }
+        });
+
         find.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 GetRequest getRequest = new GetRequest();
-                getRequest.execute("http://7e78b5e5.ngrok.io/");
+                getRequest.execute("http://bcadb276.ngrok.io/");
             }
         });
+
     }
 
 
@@ -62,11 +96,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        Marker myPos = mMap.addMarker(new MarkerOptions().position(new LatLng(-23.557096, -46.730211)));
 
+        // Set a listener for marker click.
+        mMap.setOnMarkerClickListener(this);
         // Add a marker in Sydney and move the camera
 //        LatLng sydney = new LatLng(-34, 151);
 //        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
 //        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        if (marker.getTitle().contains("SP")){
+            FirebaseCrash.log("Não vá a este local!");
+            FirebaseCrash.report(new Exception("Pessimo kart"));
+        }
+        return false;
     }
 
     private class GetRequest extends AsyncTask<String, Long, String> {
